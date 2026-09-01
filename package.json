@@ -1,0 +1,26 @@
+{
+  "name": "ytz",
+  "version": "1.0.0",
+  "description": "Youtube Clone ~ PushparajNule",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=web\" \"npm run dev --workspace=api\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PushparajNule/ytz.git"
+  },
+  "keywords": [],
+  "author": "PushparajNule",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/PushparajNule/ytz/issues"
+  },
+  "homepage": "https://github.com/PushparajNule/ytz#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}
