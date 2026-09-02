@@ -1,5 +1,11 @@
 import express from 'express'
+import conf from './conf/conf.js'
+import { connectDB } from './db/db.js'
 
 const app = express()
 
-const server = app.listen(8080, console.log("Server is running on port 8080"))
+connectDB()
+
+const port = conf.PORT
+
+const server = app.listen(port, console.log(`Server is running on port ${port}`))
