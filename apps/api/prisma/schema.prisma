@@ -6,3 +6,93 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id String @id @default(uuid())
+  username String @unique
+  email String @unique
+  password String
+
+  avatar String?
+  coverImage String?
+
+  description String?
+
+  posts Post[] @relation("owner")
+  playlist PlayList[]
+  watchlist WatchList[]
+
+  subscribers Subscription[] @relation("subscriber")
+  subscribedTo Subscription[] @relation("channel")
+
+  likedPosts Likes[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id String @id @default(uuid())
+  owner String
+  status Status
+
+  description String?
+
+  likes Likes[]
+
+  user User @relation("owner", fields: [owner], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PlayList {
+  id String @id @default(uuid())
+  owner String
+  status Status
+
+  description String?
+
+  user User @relation(fields: [owner], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WatchList {
+  id String @id @default(uuid())
+  owner String
+
+  user User @relation(fields: [owner], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Subscription {
+  subscriberId String
+  channelId String
+
+  subscriber User @relation("subscriber", fields: [subscriberId], references: [id])
+
+  channel User @relation("channel", fields: [channelId], references: [id])
+
+  @@id([subscriberId, channelId])
+}
+
+model Likes {
+  postId String
+  userId String
+
+  post Post @relation(fields: [postId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@id([postId, userId])
+}
+
+enum Status {
+  PUBLIC
+  PRIVATE
+}
