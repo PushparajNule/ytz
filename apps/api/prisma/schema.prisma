@@ -38,7 +38,9 @@ model Post {
   owner String
   status Status
 
+  title String
   description String?
+  thumbnail String?
 
   likes Likes[]
 
@@ -53,6 +55,7 @@ model PlayList {
   owner String
   status Status
 
+  title String
   description String?
 
   user User @relation(fields: [owner], references: [id])
