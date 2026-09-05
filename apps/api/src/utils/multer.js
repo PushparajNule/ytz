@@ -2,9 +2,11 @@ import multer from 'multer'
 
 const memoryUpload = multer({
     storage : multer.memoryStorage(),
-    limits : 5 * 1024 * 1024,
+    limits : { fileSize : 5 * 1024 * 1024 },
     fileFilter : (req, file, cb) => {
+
         const allowed = [
+            "image/jpg",
             "image/jpeg",
             "image/png",
             "image/webp"
@@ -16,7 +18,6 @@ const memoryUpload = multer({
             cb(new Error("Invalid Image Type"))
         }
     }
-
 })
 
 const diskUpload = multer({
@@ -26,7 +27,7 @@ const diskUpload = multer({
             cb(null, `${Date.now()}-${file.originalname}`)
         },
     }),
-    limits : 2 * 1024 * 1024 * 1024,
+    limits : { fileSize : 2 * 1024 * 1024 * 1024 },
     fileFilter : (req, file, cb) => {
         const allowed = [
             "video/mp4",
@@ -43,4 +44,4 @@ const diskUpload = multer({
     }
 })
 
-export default {memoryUpload, diskUpload}
+export {memoryUpload, diskUpload}

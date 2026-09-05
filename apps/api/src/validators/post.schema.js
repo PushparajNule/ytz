@@ -25,3 +25,5 @@ const deletePostSchema = paramSchema
 const getUserPostSchema = paramSchema
 
 const getPostSchema = paramSchema
+
+export {createPostSchema, updatePostSchema, deletePostSchema, getUserPostSchema, getPostSchema}

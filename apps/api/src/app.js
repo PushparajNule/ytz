@@ -24,6 +24,9 @@ app.get("/api/v1/health", (req, res, next) => {
     }
 })
 
+import authRoutes from './routes/auth.routes.js'
+app.use("/api/v1/auth", authRoutes)
+
 app.use(notFound)
 app.use(errorHandler)
 

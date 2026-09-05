@@ -34,3 +34,5 @@ const generateAccessToken = async (userId, res) => {
 
     return token;
 }
+
+export {generateAccessToken, generateRefreshToken}

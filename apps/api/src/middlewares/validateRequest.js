@@ -1,13 +1,17 @@
-import apiResponse from '../utils/ApiResponse.js'
+import ApiError from '../utils/ApiError.js'
 
 const validateRequest = (schema, source = "body") => {
     return (req, res, next) => {
-        const result = schema.SafeParse(req[source])
+        const result = schema.safeParse(req[source])
 
-        if(!result.success){
-            const errors = result.error.issues.map((issue) => issue.message)
+        if (!result.success) {
+            const errors = result.error.issues.map(
+                (issue) => issue.message
+            )
 
-            return apiResponse(400, errors.join(", "), null)
+            return res.status(400).json(
+                new ApiError(400, "Validation Error",errors.join(", "))
+            )
         }
 
         req[source] = result.data
@@ -15,3 +19,4 @@ const validateRequest = (schema, source = "body") => {
     }
 }
 
+export {validateRequest}
