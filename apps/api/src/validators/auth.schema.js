@@ -25,11 +25,11 @@ const signUpSchema = z.object({
 })
 
 const loginSchema = z.object({
-    username : usernameSchema,
+    username : usernameSchema.optional(),
 
     email : z.email({
         message : "Invalid Username"
-    }),
+    }).optional(),
 
     password : passwordSchema
 })
