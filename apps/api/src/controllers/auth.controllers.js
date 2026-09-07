@@ -4,7 +4,11 @@ import ApiError from '../utils/ApiError.js'
 import ApiResponse from '../utils/ApiResponse.js'
 import AsyncHandler from '../utils/AsyncHandler.js'
 import bcrypt from 'bcrypt'
-import { generateAccessToken, generateRefreshToken } from '../utils/generateToken.js'
+import { generateAccessToken, generateRefreshToken } from '../utils/GenerateToken.js'
+import generateEmailVerificationToken from '../utils/EmailVerificationToken.js'
+import redisClient from '../utils/Redis.js'
+import transporter from '../services/verifyEmailChange.js'
+import crypto from 'crypto'
 
 const signUp = AsyncHandler(async (req, res) => {
     const {username, email, password, description} = req.body
@@ -162,4 +166,84 @@ const changePassword = AsyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, null, "Password Changed Successfully"))
 })
 
-export {signUp, login, logout, currentUser, changePassword}
+const changeEmail = AsyncHandler(async (req, res) => {
+    const {newEmail} = req.body
+
+    if(!newEmail){
+        throw new ApiError(400, "New Email Is Required")
+    }
+
+    if(newEmail === req.user.email){
+        throw new ApiError(400, "Email Already In Use")
+    }
+
+    const emailExists = await prisma.user.findUnique({
+        where : { email : newEmail}
+    })
+
+    if(emailExists){
+        throw new ApiError(400, "Email Already In Use")
+    }
+
+    const {token, tokenHash,  verificationURL} = generateEmailVerificationToken()
+
+    await redisClient.set(
+        `email-verification:${tokenHash}`,
+        JSON.stringify({
+            userId : req.user.id,
+            email : newEmail,
+            tokenHash : tokenHash
+        }),
+        {
+            EX : 900
+        }
+    )
+
+    await transporter.sendMail({
+        from : '"ytz" <noreply@example.com',
+        to : "test@example.com",
+        subject : "Email Verification For Email Change",
+        text : `Click On The Link Below To Verify Email. Link Is Valid Only 15 Mins - ${verificationURL}`
+    })
+
+    res.status(200).json(new ApiResponse(200, "Verification Link Sent"))
+})
+
+const verifyEmailChange = AsyncHandler(async (req, res) => {
+    const { token } = req.query;
+
+    if (!token) {
+        throw new ApiError(400, "Verification Token Required");
+    }
+
+    const incomingTokenHash = crypto.createHash("sha256").update(token).digest("hex");
+
+    const redisKey = `email-verification:${incomingTokenHash}`;
+
+    console.log(redisKey)
+
+    const data = await redisClient.get(redisKey);
+
+    console.log(data)
+
+    if (!data) {
+        throw new ApiError(404, "Verification Token Expired");
+    }
+
+    const verificationData = JSON.parse(data);
+
+    await prisma.user.update({
+        where: {
+            id: verificationData.userId
+        },
+        data: {
+            email: verificationData.email
+        }
+    });
+
+    await redisClient.del(redisKey);
+
+    res.status(200).json(new ApiResponse(200, null, "Email Changed"));
+})
+
+export {signUp, login, logout, currentUser, changePassword, changeEmail, verifyEmailChange}

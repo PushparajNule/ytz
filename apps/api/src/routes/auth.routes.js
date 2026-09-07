@@ -3,8 +3,8 @@ import authMiddleware from '../middlewares/auth.middleware.js'
 import checkPostOwnership from '../middlewares/post.middleware.js'
 import { validateRequest } from '../middlewares/validateRequest.js'
 import { changePasswordSchema, cookieSchema, loginSchema, signUpSchema } from '../validators/auth.schema.js'
-import { changePassword, currentUser, login, logout, signUp } from '../controllers/auth.controllers.js'
-import { memoryUpload } from '../utils/multer.js'
+import { changeEmail, changePassword, currentUser, login, logout, signUp, verifyEmailChange } from '../controllers/auth.controllers.js'
+import { memoryUpload } from '../utils/Multer.js'
 
 const router = express.Router()
 
@@ -20,5 +20,9 @@ router.post("/logout", authMiddleware, validateRequest(cookieSchema, "cookies"),
 router.get("/current-user", authMiddleware, validateRequest(cookieSchema, "cookies"), currentUser)
 
 router.post("/changePassword", authMiddleware, validateRequest(changePasswordSchema), changePassword)
+
+router.post("/changeEmail", authMiddleware, changeEmail)
+
+router.post("/verify-email-change", verifyEmailChange)
 
 export default router;
