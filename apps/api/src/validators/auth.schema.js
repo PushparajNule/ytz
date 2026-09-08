@@ -47,10 +47,6 @@ const changePasswordSchema = z.object({
 const updateAccountDetailsSchema = z.object({
     username : usernameSchema.optional(),
 
-    email : z.email({
-        message : "Invalid Username"
-    }).optional(),
-
     description : z.string().optional()
 })
 

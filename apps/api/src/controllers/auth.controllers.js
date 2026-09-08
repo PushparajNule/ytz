@@ -45,7 +45,7 @@ const signUp = AsyncHandler(async (req, res) => {
     }
 
     if(coverImage){
-        const result = await Promise(uploadToCloudinary(avatar, "ytz"))
+        const result = await Promise(uploadToCloudinary(coverImage, "ytz"))
         
         coverImageURL = result?.secure_url;
     }
@@ -138,7 +138,10 @@ const logout = AsyncHandler(async (req, res) => {
 })
 
 const currentUser = AsyncHandler(async (req, res) => {
-    res.status(200).json(new ApiResponse(200, {id : req.user.id, username : req.user.username, email : req.user.email}))
+
+    const {password , refreshToken, ...safeUser} = req.user
+
+    res.status(200).json(new ApiResponse(200, safeUser))
 })
 
 const changePassword = AsyncHandler(async (req, res) => {
@@ -246,4 +249,76 @@ const verifyEmailChange = AsyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, null, "Email Changed"));
 })
 
-export {signUp, login, logout, currentUser, changePassword, changeEmail, verifyEmailChange}
+const updateAccountDetails = AsyncHandler(async (req, res) => {
+    const {username, description} = req.body
+    
+    if(username === req.user.username){
+        throw new ApiError(400, "Username Already In Use")
+    }
+
+    if(username && username !== undefined){
+        const usernameExists = await prisma.user.findUnique({
+            where : {username : username}
+        })
+
+    if(usernameExists){
+        throw new ApiError(400, "Username Already In Use")
+    }
+    }
+
+    const user = await prisma.user.update({
+        where : {id : req.user.id},
+        data : {
+            ...(username !== undefined && { username }),
+            ...(description !== undefined && { description })
+        },
+    })
+
+    const { password, refreshToken, ...safeUser } = user
+
+    res.status(200).json(new ApiResponse(200, safeUser, "Account Details Updated"))
+})
+
+const updateAvatar = AsyncHandler(async (req, res) => {
+    const avatar = req.file
+
+    const result = await uploadToCloudinary(avatar, "ytz")
+
+    const avatarURL = result?.secure_url
+
+    if(!avatarURL){
+        throw new ApiError(500, "Image Upload Failed")
+    }
+
+    const user = await prisma.user.update({
+        where : {id : req.user.id},
+        data : {avatar : avatarURL}
+    })
+
+    const { password, refreshToken, ...safeUser } = user
+
+    res.status(201).json(new ApiResponse(201, safeUser, "Avatar Update Successfull"))
+})
+
+const updateCoverImage = AsyncHandler(async (req, res) => {
+    const coverImage = req.file
+
+    const result = await uploadToCloudinary(coverImage, "ytz")
+
+    const coverImageURL = result?.secure_url
+
+    if(!coverImageURL){
+        throw new ApiError(500, "Image Upload Failed")
+    }
+
+    const user = await prisma.user.update({
+        where : {id : req.user.id},
+        data : {coverImage : coverImageURL}
+    })
+
+    const { password, refreshToken, ...safeUser } = user
+
+    res.status(201).json(new ApiResponse(201, safeUser, "Cover Image Update Successfull"))
+})
+
+export {signUp, login, logout, currentUser, changePassword, changeEmail, verifyEmailChange, updateAccountDetails, updateAvatar, updateCoverImage}
