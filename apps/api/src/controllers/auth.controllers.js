@@ -1,5 +1,5 @@
 import { prisma } from '../db/db.js'
-import uploadToCloudinary from '../services/uploadToCloud.js'
+import {uploadToCloudinary} from '../services/uploadToCloud.js'
 import ApiError from '../utils/ApiError.js'
 import ApiResponse from '../utils/ApiResponse.js'
 import AsyncHandler from '../utils/AsyncHandler.js'

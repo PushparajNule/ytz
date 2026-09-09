@@ -9,15 +9,17 @@ const createPostSchema = z.object({
 
     description : z.string().max(256, {
         message : "Description Limit Exceeded"
-    }),
+    }).optional(),
 
     status : z.enum(["PUBLIC", "PRIVATE"]),
 })
 
 const updatePostSchema = createPostSchema.partial()
 
-const paramSchema = z.string().uuid().min(1, {
+const paramSchema = z.object({
+    id : z.string().min(1, {
     message : "Invalid Id"
+})
 })
 
 const deletePostSchema = paramSchema
@@ -26,4 +28,4 @@ const getUserPostSchema = paramSchema
 
 const getPostSchema = paramSchema
 
-export {createPostSchema, updatePostSchema, deletePostSchema, getUserPostSchema, getPostSchema}
+export {createPostSchema, updatePostSchema, deletePostSchema, getUserPostSchema, getPostSchema, paramSchema}

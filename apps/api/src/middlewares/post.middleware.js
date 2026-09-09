@@ -9,8 +9,8 @@ const checkPostOwnership = asyncHandler(async (req, res, next) => {
         throw new ApiError(400, "Invalid Id")
     }
 
-    const post = prisma.post.findUnique({
-        where : {id}
+    const post = await prisma.post.findUnique({
+        where : {id : id}
     })
 
     if(!post){

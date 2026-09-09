@@ -29,17 +29,35 @@ const diskUpload = multer({
     }),
     limits : { fileSize : 2 * 1024 * 1024 * 1024 },
     fileFilter : (req, file, cb) => {
-        const allowed = [
+        const vidoeTypesAllowed = [
             "video/mp4",
             "video/webm",
             "video/ogg",
             "video/quicktime"
         ]
 
-        if (allowed.includes(file.mimetype)) {
+        if(file.fieldname == "video"){
+            
+            if (vidoeTypesAllowed.includes(file.mimetype)) {
+                cb(null, true)
+            } else {
+                cb(new Error("Invalid Video Type"))
+            }
+        }
+
+        const imageTypesAllowed = [
+            "image/jpg",
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ]
+
+        if(file.fieldname == "thumbnail"){
+            if (imageTypesAllowed.includes(file.mimetype)) {
             cb(null, true)
         } else {
-            cb(new Error("Invalid Video Type"))
+            cb(new Error("Invalid Image Type"))
+        }
         }
     }
 })
