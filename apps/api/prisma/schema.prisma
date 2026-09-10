@@ -21,6 +21,7 @@ model User {
   posts Post[] @relation("owner")
   playlist PlayList[]
   watchlist WatchList[]
+  watchhistory WatchHistory[]
 
   subscribers Subscription[] @relation("subscriber")
   subscribedTo Subscription[] @relation("channel")
@@ -38,6 +39,10 @@ model Post {
   owner String
   status Status
 
+  watchlist WatchList[]
+  playlistItem PlayListItem[]
+  watchhistory WatchHistory[]
+
   title String
   description String?
   thumbnail String?
@@ -47,7 +52,7 @@ model Post {
 
   likes Likes[]
 
-  user User @relation("owner", fields: [owner], references: [id])
+  user User @relation("owner", fields: [owner], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -55,49 +60,87 @@ model Post {
 
 model PlayList {
   id String @id @default(uuid())
-  owner String
+  userId String
   status Status
+  items PlayListItem[]
 
   title String
   description String?
 
-  user User @relation(fields: [owner], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId, createdAt])
+}
+
+model PlayListItem {
+  playlistId String
+  postId String
+
+  playlist PlayList @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  addedAt DateTime @default(now())
+
+  @@id([playlistId, postId])
+  @@index([playlistId, addedAt])
 }
 
 model WatchList {
-  id String @id @default(uuid())
-  owner String
+  userId String
+  postId String
 
-  user User @relation(fields: [owner], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  addedAt DateTime @default(now())
+
+  @@id([userId, postId])
+  @@index([userId, addedAt])
 }
 
 model Subscription {
   subscriberId String
   channelId String
 
-  subscriber User @relation("subscriber", fields: [subscriberId], references: [id])
-
-  channel User @relation("channel", fields: [channelId], references: [id])
-
-  @@id([subscriberId, channelId])
-}
-
-model Likes {
-  postId String
-  userId String
-
-  post Post @relation(fields: [postId], references: [id])
-  user User @relation(fields: [userId], references: [id])
+  subscriber User @relation("subscriber", fields: [subscriberId], references: [id], onDelete: Cascade)
+  channel User @relation("channel", fields: [channelId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
-  @@id([postId, userId])
+  @@id([subscriberId, channelId])
+  @@index([subscriberId, createdAt])
+  @@index([channelId, createdAt])
+}
+
+model Likes {
+  userId String
+  postId String
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([userId, postId])
+  @@index([userId, createdAt])
+  @@index([postId, createdAt])
+}
+
+model WatchHistory {
+  userId String
+  postId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  watchedAt DateTime @default(now())
+
+  @@id([userId, postId])
+  @@index([userId, watchedAt])
+
 }
 
 enum Status {
