@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import authApi from "../api/auth.api"
 
-function Home(){
+function    Home(){
 
     const [server, setServer] = useState("Offline")
     useEffect(() => {
