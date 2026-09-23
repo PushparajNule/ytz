@@ -1,15 +1,23 @@
 import { Outlet } from "react-router-dom";
 import { Header, Footer, Sidebar } from "./components";
-import Home from "./pages/Home";
 
 function App(){
 
   return(
     <>
-    <Header/>
-    <Sidebar/>
-      <Outlet/>
-    <Footer/>
+      <div className="h-screen flex flex-col">
+        <Header/>
+
+        <div className="flex flex-1">
+          <Sidebar/>
+
+          <main className="flex-1 p-2 h-screen border">
+            <Outlet/>
+          </main>
+        </div>
+
+        <Footer/>
+      </div>
     </>
   )
 }

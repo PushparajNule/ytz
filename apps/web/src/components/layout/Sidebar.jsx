@@ -4,9 +4,7 @@ function Sidebar(){
 
     return (
         <>
-            <h1>Sidebar</h1>
-            <div className="">
-
+            <div className="border w-min h-full p-2">
                 <div>
                     <NavLink to={"/"}> Home </NavLink> 
                 </div>
@@ -26,7 +24,6 @@ function Sidebar(){
                 <div>
                     <NavLink to={"/settings"}> Settings </NavLink>
                 </div>
-
             </div>
         </>
     )

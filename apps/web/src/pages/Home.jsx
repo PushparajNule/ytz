@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import authApi from "../api/auth.api"
 
-function    Home(){
+function Home(){
 
     const [server, setServer] = useState("Offline")
     useEffect(() => {
@@ -21,7 +21,9 @@ function    Home(){
 
     return (
         <>
-            <h1>{server.message}</h1>
+            <div className="">
+                <h1>{server.message}</h1>
+            </div>
         </>
     )
 }

@@ -1,0 +1,55 @@
+import {useForm} from 'react-hook-form'
+import { Button, Input } from '../components'
+import { NavLink } from 'react-router-dom'
+
+function Signup() {
+
+    const {register, handleSubmit, formState = {errors}} = useForm()
+
+    const onSubmit = async (data) => {
+
+        const formData = new FormData()
+
+        formData.append("username", data.username)
+        formData.append("email", data.email)
+        formData.append("password", data.password)
+        
+        if(data.avatar[0] !== undefined){
+            formData.append("avatar", data.avatar[0])
+        }
+
+        if(data.coverImage[0] !== undefined){
+            formData.append("coverImage", data.coverImage[0])
+        }
+
+        console.log(formData)
+    }
+
+    return (
+        <>
+        <div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <div>
+                <h2>Account Exists?</h2>
+                <NavLink to={"/login"} className={`underline`}>SignIn Here...</NavLink>
+            </div>
+            <div className='border w-min p-4 mt-2'>
+                <Input {...register("username")} label="username : " placeholder="username" className="border"/>
+
+                <Input {...register("email")} label="email : " placeholder="email" className="border"/>
+
+                <Input {...register("password")} label="email : " placeholder="password" className="border"/>
+
+                <Input {...register("avatar")} type="file" accept="image/*" label="avatar : " className="border"/>
+
+                <Input {...register("coverImage")} type="file" accept="image/*" label="coverImage : " className="border" />
+
+                <Button type="submit" className="border">Submit</Button>
+            </div>
+        </form>
+        </div>
+        </>
+    )
+}
+
+export default Signup
