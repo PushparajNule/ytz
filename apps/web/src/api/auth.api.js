@@ -6,12 +6,12 @@ class AuthApi {
         return api.get("/health")
     }
     
-    login(username, email, password) {
-        return api.post("/auth/login", {username, email, password})
+    login(payload) {
+        return api.post("/auth/login", payload)
     }
 
-    signup(username, email, password, avatar, coverImage){
-        return api.post("/auth/signUp", {username, email, password, avatar, coverImage})
+    signup(payload){
+        return api.post("/auth/signUp", payload)
     }
 
     logout(){
@@ -22,28 +22,28 @@ class AuthApi {
         return api.get("/auth/current-user")
     }
 
-    changePassword(oldPassword, newPassword){
-        return api.post("/auth/changePassword", {oldPassword, newPassword})
+    changePassword(payload){
+        return api.post("/auth/changePassword", payload)
     }
 
-    changeEmail(newEmail){
-        return api.post("/auth/changeEmail", {newEmail})
+    changeEmail(payload){
+        return api.post("/auth/changeEmail", payload)
     }
 
     verifyChangeEmail(token){
         return api.post(`/auth/verify-email-change/${token}`)
     }
 
-    updateAccountDetails(description, username){
-        return api.patch("/auth/updateAccountDetails", {description, username})
+    updateAccountDetails(payload){
+        return api.patch("/auth/updateAccountDetails", payload)
     }
 
-    updateAvatar(avatar){
-        return api.patch("/auth/updateAvatar", {avatar})
+    updateAvatar(payload){
+        return api.patch("/auth/updateAvatar", payload)
     }
 
-    updateCoverImage(coverImage){
-        return api.patch("/auth/updateCoverImage", {coverImage})
+    updateCoverImage(payload){
+        return api.patch("/auth/updateCoverImage", payload)
     }
 }
 

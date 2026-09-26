@@ -45,7 +45,7 @@ const signUp = AsyncHandler(async (req, res) => {
     }
 
     if(coverImage){
-        const result = await Promise(uploadToCloudinary(coverImage, "ytz"))
+        const result = await uploadToCloudinary(coverImage, "ytz")
         
         coverImageURL = result?.secure_url;
     }

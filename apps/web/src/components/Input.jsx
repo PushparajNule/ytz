@@ -5,13 +5,13 @@ const Input = forwardRef(function Input({label, type, className = "", ...props},
 
     return (
         <>
-        <div className="flex w-full">
+        <div className="w-full">
             <div>
                 {label && <label htmlFor={id}>{label}</label>}
             </div>
 
             <div>
-                <input type={type} className={`${className}`} ref={ref} {...props} id={id}/>
+                <input type={type} className={`${className} pl-0.5 rounded`} ref={ref} autoComplete="on" required {...props} id={id}/>
             </div>
         </div>
         </>

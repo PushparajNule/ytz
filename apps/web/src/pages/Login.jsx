@@ -1,10 +1,32 @@
 import { useForm } from "react-hook-form"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import { Button, Input } from "../components"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import authApi from "../api/auth.api"
 
 function Login() {
 
-    const {register, handleSubmit, formState = {errors}} = useForm()
+    const {register, handleSubmit} = useForm()
+
+    const navigate = useNavigate()
+
+    const queryClient = useQueryClient()
+
+    const loginMutation = useMutation({
+        mutationFn : authApi.login,
+
+        onSuccess : () => {
+            queryClient.invalidateQueries({
+                queryKey : ['user']
+            })
+
+            navigate("/")
+        },
+
+        onError : (error) => {
+            console.log(error)
+        }
+    })
 
     const onSubmit = async (data) => {
 
@@ -18,8 +40,9 @@ function Login() {
             payload.username = data.identifier
         }
 
-        console.log(payload)
+        loginMutation.mutate(payload)
     }
+
     return (
         <>
         <div>
@@ -30,10 +53,10 @@ function Login() {
                 </div>
 
                 <div className="border p-3 w-min">
-                    <Input {...register("identifier")} label="username or email" placeholder="username or email" className="border"/>
-                    <Input {...register("password")} label="password" placeholder="password" className="border"/>
+                    <Input {...register("identifier")} label="username or email : " placeholder="username or email" className="border"/>
+                    <Input {...register("password")} label="password : " placeholder="password" className="border"/>
 
-                    <Button type="submit" className="border" >Login</Button>
+                    <Button type="submit" className="border" disabled={loginMutation.isPending} >{loginMutation.isPending ? "Logging In..." : "Login"}</Button>
                 </div>
             </form>
         </div>
