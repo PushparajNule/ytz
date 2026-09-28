@@ -45,6 +45,10 @@ class AuthApi {
     updateCoverImage(payload){
         return api.patch("/auth/updateCoverImage", payload)
     }
+
+    refreshAccessToken(){
+        return api.post("/auth/refresh")
+    }
 }
 
 const authApi = new AuthApi()

@@ -23,12 +23,21 @@ function Home(){
     const {data : user} = useQuery({
         queryKey : ["user"],
         queryFn : async () => {
-            const user = await authApi.currentUser()
-            return user;
+            try {
+                const user = await authApi.currentUser()
+                return user;
+            } catch (error) {
+                if(error.response.status !== 401){
+                    throw error
+                }
+                
+                await authApi.refreshAccessToken()
+
+                return await authApi.currentUser()
+            }
         },
         staleTime : (1000 * 60) * 30
     })
-
 
     return (
         <>

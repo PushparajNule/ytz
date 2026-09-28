@@ -9,6 +9,8 @@ import generateEmailVerificationToken from '../utils/EmailVerificationToken.js'
 import redisClient from '../utils/Redis.js'
 import transporter from '../services/verifyEmailChange.js'
 import crypto from 'crypto'
+import jwt from 'jsonwebtoken'
+import conf from '../conf/conf.js'
 
 const signUp = AsyncHandler(async (req, res) => {
     const {username, email, password, description} = req.body
@@ -117,6 +119,12 @@ const login = AsyncHandler(async (req, res) => {
     }
 
     const token = await generateAccessToken(user.id, res)
+    const refreshToken = await generateRefreshToken(user.id, res)
+
+    await prisma.user.update({
+        where : { id : user.id },
+        data : { refreshToken : refreshToken}
+    })
 
     res.status(200).json(
         new ApiResponse(200, {
@@ -129,6 +137,12 @@ const login = AsyncHandler(async (req, res) => {
 
 const logout = AsyncHandler(async (req, res) => {
     res.clearCookie("accessToken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none"
+    })
+
+    res.clearCookie("refreshToken", {
         httpOnly: true,
         secure: true,
         sameSite: "none"
@@ -321,4 +335,35 @@ const updateCoverImage = AsyncHandler(async (req, res) => {
     res.status(201).json(new ApiResponse(201, safeUser, "Cover Image Update Successfull"))
 })
 
-export {signUp, login, logout, currentUser, changePassword, changeEmail, verifyEmailChange, updateAccountDetails, updateAvatar, updateCoverImage}
+const refreshAccessToken = AsyncHandler(async (req, res) => {
+
+    const refreshToken = req.cookies?.refreshToken
+
+    if(!refreshToken){
+        throw new ApiError(401, "Refresh Token Required")
+    }
+
+    let decoded;
+
+    try {
+        decoded = jwt.verify(refreshToken, conf.JWT_SECRET)
+    } catch (error) {
+        throw new ApiError(401, "Invalid or Expired Refresh Token")
+    }
+
+    const user = await prisma.user.findUnique({
+        where : {id : decoded.id}
+    })
+
+    if(!user){
+        throw new ApiError(401, "User Not Found")
+    }
+
+    generateAccessToken(user.id, res)
+
+    res.status(200).json({
+        message : "Access Token Refreshed"
+    })
+})
+
+export {signUp, login, logout, currentUser, changePassword, changeEmail, verifyEmailChange, updateAccountDetails, updateAvatar, updateCoverImage, refreshAccessToken}
