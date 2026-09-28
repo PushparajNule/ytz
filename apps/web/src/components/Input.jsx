@@ -1,6 +1,6 @@
 import { useId, forwardRef } from "react"
 
-const Input = forwardRef(function Input({label, type, className = "", ...props}, ref){
+const Input = forwardRef(function Input({label, type, required = true, className = "", ...props}, ref){
     const id = useId()
 
     return (
@@ -11,7 +11,7 @@ const Input = forwardRef(function Input({label, type, className = "", ...props},
             </div>
 
             <div>
-                <input type={type} className={`${className} pl-0.5 rounded`} ref={ref} autoComplete="on" required {...props} id={id}/>
+                <input type={type} className={`${className} pl-0.5 rounded`} ref={ref} autoComplete="on" required={required} {...props} id={id}/>
             </div>
         </div>
         </>

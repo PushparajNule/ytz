@@ -26,7 +26,7 @@ function Home(){
             const user = await authApi.currentUser()
             return user;
         },
-        staleTime : (1000 * 60) * 15
+        staleTime : (1000 * 60) * 30
     })
 
 

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form"
 import { NavLink, useNavigate } from "react-router-dom"
 import { Button, Input } from "../components"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import authApi from "../api/auth.api"
 
 function Login() {
@@ -24,7 +24,7 @@ function Login() {
         },
 
         onError : (error) => {
-            console.log(error)
+            console.log(error.response.data.errors)
         }
     })
 
@@ -57,6 +57,10 @@ function Login() {
                     <Input {...register("password")} label="password : " placeholder="password" className="border"/>
 
                     <Button type="submit" className="border" disabled={loginMutation.isPending} >{loginMutation.isPending ? "Logging In..." : "Login"}</Button>
+
+                    {loginMutation.isError && <div>
+                            <p className='border p-2 rounded'>{loginMutation.error.response.data.errors}</p>
+                        </div>}
                 </div>
             </form>
         </div>

@@ -3,10 +3,18 @@ import Button from "../Button";
 import Icon from "../Icon";
 import Logo from "../Logo";
 import SearchBar from "../SearchBar";
+import { useQuery } from "@tanstack/react-query";
 
 function Header(){
 
-    
+    const {data : user} = useQuery({
+        queryKey : ["user"],
+        queryFn : async () => {
+            const user = await authApi.currentUser()
+            return user;
+        },
+        staleTime : (1000 * 60) * 30
+    })
 
     return (
         <>
@@ -25,15 +33,16 @@ function Header(){
                     </div>
 
                     <div>
-                        {/* Check if user is logged in : if logged in icon else signup*/}
-                        <Icon/>
-                            <NavLink to={"/signup"}>
-                                SignUp
-                            </NavLink>
-
-                            <NavLink to={"/login"}>
-                                Login
-                            </NavLink>
+                        {user && <Icon/>}
+                        {!user && <div>
+                                <NavLink to={"/signup"}>
+                                    SignUp
+                                </NavLink>
+                                /
+                                <NavLink to={"/login"}>
+                                    Login
+                                </NavLink>
+                            </div>}
                     </div>
                 </div>
             </div>

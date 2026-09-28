@@ -24,7 +24,7 @@ function Signup() {
         },
 
         onError : (error) => {
-            console.log(error)
+            error.response.data.errors
         }
     })
 
@@ -55,19 +55,25 @@ function Signup() {
                 <h2>Account Exists?</h2>
                 <NavLink to={"/login"} className={`underline`}>SignIn Here...</NavLink>
             </div>
+
             <div className='border w-min p-4 mt-2'>
-                <Input {...register("username")} label="username : " placeholder="username" className="border" />
+                <Input {...register("username")} error={errors} label="username : " placeholder="username" className="border" />
 
                 <Input {...register("email")} label="email : " placeholder="email" className="border"/>
 
                 <Input {...register("password")} label="password : " placeholder="password" className="border"/>
 
-                <Input {...register("avatar")} type="file" accept="image/*" label="avatar : " className="border"/>
+                <Input {...register("avatar")} type="file" accept="image/*" label="avatar : " required={false} className="border"/>
 
-                <Input {...register("coverImage")} type="file" accept="image/*" label="coverImage : " className="border" />
+                <Input {...register("coverImage")} type="file" accept="image/*" label="coverImage : " className="border" required={false}/>
 
                 <Button type="submit" className="border" disabled={signupMutation.isPending}>{signupMutation.isPending ? "Registering..." : "Signup"}</Button>
+
+                {signupMutation.isError && <div>
+                    <p className='border p-2 rounded'>{signupMutation.error.response.data.errors}</p>
+                </div>}
             </div>
+
         </form>
         </div>
         </>
