@@ -1,6 +1,8 @@
-function Logo() {
+function Logo({src, alt="Logo"}) {
     return (
-        <div>Logo</div>
+        <div>
+            <img src={src} alt={alt}></img>
+        </div>
     )
 }
 

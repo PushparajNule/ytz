@@ -16,6 +16,8 @@ function Header(){
         staleTime : (1000 * 60) * 30
     })
 
+    //console.log(user?.data?.data)
+
     return (
         <>
             <div className="flex p-2 justify-between border">
@@ -23,26 +25,32 @@ function Header(){
                     <Logo/>
                 </div>
 
-                <div className="flex w-[70%] justify-around">
-                    <div>
-                        <SearchBar/>
+                <div className="flex w-[50%] justify-between">
+                    <div className="">
+                        <div className="">
+                            <SearchBar/>
+                        </div>
                     </div>
 
-                    <div>
-                        <Button/>
-                    </div>
+                    <div className="flex w-[20%] justify-between">
+                        <div className="">
+                            <NavLink to={"/createPost"}>
+                                <Button> + Create</Button>
+                            </NavLink>
+                        </div>
 
-                    <div>
-                        {user && <Icon/>}
-                        {!user && <div>
-                                <NavLink to={"/signup"}>
-                                    SignUp
-                                </NavLink>
-                                /
-                                <NavLink to={"/login"}>
-                                    Login
-                                </NavLink>
-                            </div>}
+                        <div>
+                            {user && <Icon src={user?.data?.data?.avatar}/>}
+                            {!user && <div>
+                                    <NavLink to={"/signup"}>
+                                        SignUp
+                                    </NavLink>
+                                    /
+                                    <NavLink to={"/login"}>
+                                        Login
+                                    </NavLink>
+                                </div>}
+                        </div>
                     </div>
                 </div>
             </div>

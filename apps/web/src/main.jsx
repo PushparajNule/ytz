@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from 'react-router-dom'
-import {Account, Home, Login, Playlists, PrivacyPolicy, Settings, Signup, Subscriptions} from './pages'
+import {Account, CreatePost, Home, Login, Playlists, PrivacyPolicy, Settings, Signup, Subscriptions} from './pages'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const route = createBrowserRouter(
@@ -18,6 +18,8 @@ const route = createBrowserRouter(
 
       <Route path='/signup' element={<Signup/>}/>
       <Route path='/login' element={<Login/>}/>
+
+      <Route path='/createPost' element={<CreatePost/>}/>
     </Route>
   )
 )

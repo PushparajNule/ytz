@@ -1,4 +1,4 @@
-function Button({children, type="button", ...props}, className){
+function Button({children, type="button"}, className){
     return (
         <button className={`cursor-pointer ${className}`}>{children}</button>
     )

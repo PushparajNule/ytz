@@ -2,7 +2,7 @@ function CreatePost(){
 
     return (
         <>
-        
+            CreatePost
         </>
     )
 }
