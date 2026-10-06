@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import authApi from "../api/auth.api"
 import { useQuery } from "@tanstack/react-query"
+import { useAuth } from "../features/AuthContext"
 
 function Home(){
 
@@ -20,24 +21,7 @@ function Home(){
         health()
     }, [])
 
-    const {data : user} = useQuery({
-        queryKey : ["user"],
-        queryFn : async () => {
-            try {
-                const user = await authApi.currentUser()
-                return user;
-            } catch (error) {
-                if(error.response.status !== 401){
-                    throw error
-                }
-                
-                await authApi.refreshAccessToken()
-
-                return await authApi.currentUser()
-            }
-        },
-        staleTime : (1000 * 60) * 30
-    })
+    const {user} = useAuth()
 
     return (
         <>

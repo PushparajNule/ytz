@@ -1,7 +1,7 @@
-function Icon({src, alt="Icon"}) {
+function Icon({src, alt="Icon", className=""}) {
     return (
-        <div className="">
-            <img src={src} alt={alt} className="rounded-full w-10 h-10 object-cover"></img>
+        <div>
+            <img src={src} alt={alt} className={`rounded-full object-cover ${className}`}></img>
         </div>
     )
 }
