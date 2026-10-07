@@ -1,6 +1,7 @@
 import {useQuery} from "@tanstack/react-query"
 import { useAuth } from "../features/AuthContext"
 import Icon from "../components/Icon"
+import { NavLink } from "react-router-dom"
 
 function Account(){
 
@@ -27,7 +28,9 @@ function Account(){
 
                     <div>
                         <p className="text-sm">
-                            view channel
+                            <NavLink to={`/:${user?.data?.data?.username}/channel`}>
+                                view channel
+                            </NavLink>
                         </p>
                     </div>
                 </div>

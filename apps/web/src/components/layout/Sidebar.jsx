@@ -1,6 +1,9 @@
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../features/AuthContext";
 
 function Sidebar(){
+
+    const {user} = useAuth()
 
     return (
         <>
@@ -18,7 +21,7 @@ function Sidebar(){
                 </div>
 
                 <div>
-                    <NavLink to={"/accounts"}> Account </NavLink>
+                    <NavLink to={`/:${user?.data?.data?.username}/account`}> Account </NavLink>
                 </div>
 
                 <div>
