@@ -57,7 +57,7 @@ function Signup() {
             </div>
 
             <div className='border w-min p-4 mt-2'>
-                <Input {...register("username")} error={errors} label="username : " placeholder="username" className="border" />
+                <Input {...register("username")} error={signupMutation.error} label="username : " placeholder="username" className="border" />
 
                 <Input {...register("email")} label="email : " placeholder="email" className="border"/>
 

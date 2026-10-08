@@ -40,7 +40,9 @@ function Header(){
                         </div>
 
                         <div>
-                            {user && <Icon src={user?.data?.data?.avatar} className="w-10 h-10"/>}
+                            <NavLink to={`/:${user?.data?.data?.username}/account`}>
+                                {user && <Icon src={user?.data?.data?.avatar} className="w-10 h-10"/>}
+                            </NavLink>
                             {!user && <div>
                                     <NavLink to={"/signup"}>
                                         SignUp
