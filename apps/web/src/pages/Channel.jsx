@@ -5,8 +5,6 @@ import { NavLink, Outlet } from "react-router-dom"
 function Channel() {
 
     const {user} = useAuth()
-
-    console.log(user)
     
     return (
         <div>
@@ -25,7 +23,7 @@ function Channel() {
                     </div>
 
                     <div className="w-full">
-                        subscribers
+                        {user?.data?.data?.subscriberCount} Subscribers
                     </div>
 
                     <div className="w-full">

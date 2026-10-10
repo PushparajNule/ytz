@@ -22,7 +22,7 @@ function Account(){
                 
                     <div>
                         <p className="text-sm">
-                            subscibers
+                            {user?.data?.data?.subscriberCount} Subscribers
                         </p>
                     </div>
 
