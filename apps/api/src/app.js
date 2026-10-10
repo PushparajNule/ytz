@@ -30,6 +30,9 @@ app.use("/api/v1/auth", authRoutes)
 import postRoutes from './routes/post.routes.js'
 app.use("/api/v1/post", postRoutes)
 
+import subsRoutes from './routes/subs.routes.js'
+app.use("/api/v1/subs", subsRoutes)
+
 app.use(notFound)
 app.use(errorHandler)
 

@@ -155,7 +155,25 @@ const currentUser = AsyncHandler(async (req, res) => {
 
     const {password , refreshToken, ...safeUser} = req.user
 
-    res.status(200).json(new ApiResponse(200, safeUser))
+    const subscriberCount = await prisma.subscription.count({
+        where : { channelId : safeUser.id}
+    })
+
+    const subscribedTo = await prisma.subscription.findMany({
+        where : { subscriberId : safeUser.id},
+        include : { channel : {
+            select : {
+                username : true,
+                avatar : true,
+            }
+        }}
+    })
+
+    const user = {...safeUser, subscribedTo, subscriberCount}
+
+    console.log(user)
+
+    res.status(200).json(new ApiResponse(200, user))
 })
 
 const changePassword = AsyncHandler(async (req, res) => {
