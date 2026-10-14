@@ -21,7 +21,7 @@ function Sidebar(){
                 </div>
 
                 <div>
-                    <NavLink to={`/:${user?.data?.data?.username}/account`}> Account </NavLink>
+                    <NavLink to={`/${user?.data?.data?.username}/account`}> Account </NavLink>
                 </div>
 
                 <div>

@@ -6,7 +6,7 @@ import { getChannel, subscribe, unsubscribe } from '../controllers/subs.controll
 
 const route = express.Router()
 
-route.get('/getChannel/:id', authMiddleware, validateRequest(paramSchema, "params"), getChannel)
+route.get('/getChannel/:username', authMiddleware, validateRequest(paramSchema, "params"), getChannel)
 route.post('/subscribe/:id', authMiddleware, validateRequest(paramSchema, "params"), subscribe)
 route.delete('/unsubscribe/:id', authMiddleware, validateRequest(paramSchema, "params"), unsubscribe)
 

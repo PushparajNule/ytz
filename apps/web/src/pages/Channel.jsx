@@ -1,16 +1,27 @@
+import { useQuery } from "@tanstack/react-query";
+import subsApi from "../api/subs.api";
 import Icon from "../components/Icon"
-import { useAuth } from "../features/AuthContext"
-import { NavLink, Outlet } from "react-router-dom"
+import { NavLink, Outlet, useParams } from "react-router-dom"
+import { useAuth } from "../features/AuthContext.jsx";
 
 function Channel() {
 
-    const {user} = useAuth()
-    
+    const {user : loggedUser} = useAuth()
+
+    const {username} = useParams()
+
+    const isOwner = loggedUser?.data?.data?.username == username
+
+    const {data : user} = useQuery({
+        queryKey : ["channel", username],
+        queryFn : async () => await subsApi.getChannel(username)
+    })
+
     return (
         <div>
-            <div className="w-full h-60">
+            {user?.data?.data?.coverImage && <div className="w-full h-60">
                 <Icon src={user?.data?.data?.coverImage} alt="CoverImage" className="w-full h-full rounded-xl" />
-            </div>
+            </div>}
 
             <div className="flex mt-4">
                 <div className="flex w-1/4 justify-center">
@@ -33,17 +44,21 @@ function Channel() {
             </div>
 
             <div className="mt-4 pb-4 border-b">
-                <NavLink to={`/:${user?.data?.data?.username}/channel/playlists`} className={`pr-4`}>
+                <NavLink to={`/${user?.data?.data?.username}/channel/playlists`} className={`pr-4`}>
                     PlayLists
                 </NavLink>
 
-                <NavLink to={`/:${user?.data?.data?.username}/channel/my-posts`} className={`pr-4`}>
+                <NavLink to={`/${user?.data?.data?.username}/channel/my-posts`} className={`pr-4`}>
                     Posts
                 </NavLink>
-                
-                <NavLink to={`/:${user?.data?.data?.username}/channel/liked-posts`}>
+
+                {isOwner && <NavLink to={`/${user?.data?.data?.username}/channel/liked-posts`} className={`pr-4`}>
                     Liked Posts
-                </NavLink>
+                    </NavLink>}
+
+                {isOwner && <NavLink>
+                    Edit Channel
+                    </NavLink>}
             </div>
 
             <div className="mt-4">

@@ -28,7 +28,7 @@ function Account(){
 
                     <div>
                         <p className="text-sm">
-                            <NavLink to={`/:${user?.data?.data?.username}/channel`}>
+                            <NavLink to={`/${user?.data?.data?.username}/channel`}>
                                 view channel
                             </NavLink>
                         </p>

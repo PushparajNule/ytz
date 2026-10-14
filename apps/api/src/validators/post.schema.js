@@ -19,7 +19,11 @@ const updatePostSchema = createPostSchema.partial()
 const paramSchema = z.object({
     id : z.string().min(1, {
     message : "Invalid Id"
-})
+    }).optional(),
+
+    username : z.string().min(1, {
+    message : "Invalid Id"
+    }).optional(),
 })
 
 const deletePostSchema = paramSchema

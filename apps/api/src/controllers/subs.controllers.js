@@ -1,15 +1,18 @@
 import { prisma } from "../db/db.js";
+import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import AsyncHandler from "../utils/AsyncHandler.js";
 
 const getChannel = AsyncHandler(async (req, res) => {
 
-    const channelId = req.params.id
+    const channelName = req.params.username
     const userId = req.user.id
 
     const {password, refreshToken, ...safeChannel} = await prisma.user.findUnique({
-        where : {id : channelId}
+        where : {username : channelName}
     })
+
+    console.log(safeChannel)
 
     const isSubscribed = !!(await prisma.subscription.findUnique({
         where: {
@@ -33,6 +36,10 @@ const subscribe = AsyncHandler(async (req, res) => {
 
     const channelId = req.params.id
     const userId = req.user.id
+
+    if(channelId === userId){
+        throw new ApiError(400, "Cannot Subscribe To Yourself")
+    }
 
     const subscribe = await prisma.subscription.create({
         data : {
