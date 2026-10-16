@@ -1,6 +1,6 @@
-function Button({children, type="button"}, className){
+function Button({children, type="submit", className="", onClick}){
     return (
-        <button className={`cursor-pointer ${className}`}>{children}</button>
+        <button type={type} onClick={onClick} className={`cursor-pointer ${className}`}>{children}</button>
     )
 }
 

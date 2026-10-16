@@ -22,7 +22,7 @@ router.post("/changePassword", authMiddleware, validateRequest(changePasswordSch
 
 router.post("/changeEmail", authMiddleware, changeEmail)
 
-router.post("/verify-email-change", verifyEmailChange)
+router.get("/verify-email-change", verifyEmailChange)
 
 router.patch("/updateAccountDetails",authMiddleware, validateRequest(updateAccountDetailsSchema), updateAccountDetails)
 

@@ -278,7 +278,7 @@ const verifyEmailChange = AsyncHandler(async (req, res) => {
 
     await redisClient.del(redisKey);
 
-    res.status(200).json(new ApiResponse(200, null, "Email Changed"));
+    res.status(200).json(new ApiResponse(200, null, "Email Changed. You Can Go Back To Website And Reload The Page To View Changes."));
 })
 
 const updateAccountDetails = AsyncHandler(async (req, res) => {

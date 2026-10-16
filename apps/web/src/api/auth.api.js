@@ -31,7 +31,9 @@ class AuthApi {
     }
 
     verifyChangeEmail(token){
-        return api.post(`/auth/verify-email-change/${token}`)
+        return api.get(`/auth/verify-email-change`, {
+            params : { token }
+        })
     }
 
     updateAccountDetails(payload){
