@@ -22,6 +22,5 @@ import UpdatePassword from "./UpdateAccount/UpdatePassword.jsx";
 import UpdateAvatar from "./UpdateAccount/UpdateAvatar.jsx";
 import UpdateCoverImage from "./UpdateAccount/UpdateCoverImage.jsx";
 import Appearance from "./Appearance.jsx";
-import DeleteAccount from "./DeleteAccount.jsx";
 
-export {Home, Subscriptions, Playlists, Account, Channel, Settings, PrivacyPolicy, Signup, Login, CreatePost, MyPosts, LikedPosts, UpdateAccount, Appearance, DeleteAccount, UpdateAccountDetails, UpdateEmail, UpdatePassword, UpdateAvatar, UpdateCoverImage, Logout}
+export {Home, Subscriptions, Playlists, Account, Channel, Settings, PrivacyPolicy, Signup, Login, CreatePost, MyPosts, LikedPosts, UpdateAccount, Appearance, UpdateAccountDetails, UpdateEmail, UpdatePassword, UpdateAvatar, UpdateCoverImage, Logout}

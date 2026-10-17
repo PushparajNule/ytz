@@ -16,12 +16,6 @@ function Settings() {
                 </div>
             </NavLink>
 
-            <NavLink to={`/settings/delete-account`}>
-                <div>
-                    Delete Account
-                </div>
-            </NavLink>
-
             <div>
                 Terms and Conditions
             </div>
