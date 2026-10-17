@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import {createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider} from 'react-router-dom'
-import {Account, Appearance, Channel, CreatePost, DeleteAccount, Home, LikedPosts, Login, MyPosts, Playlists, PrivacyPolicy, Settings, Signup, Subscriptions, UpdateAccount, UpdateAccountDetails, UpdateAvatar, UpdateCoverImage, UpdateEmail, UpdatePassword} from './pages'
+import {Account, Appearance, Channel, CreatePost, DeleteAccount, Home, LikedPosts, Login, Logout, MyPosts, Playlists, PrivacyPolicy, Settings, Signup, Subscriptions, UpdateAccount, UpdateAccountDetails, UpdateAvatar, UpdateCoverImage, UpdateEmail, UpdatePassword} from './pages'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from './features/AuthContext.jsx'
 
@@ -34,6 +34,7 @@ const route = createBrowserRouter(
           <Route path='update-password' element={<UpdatePassword/>}/>
           <Route path='update-avatar' element={<UpdateAvatar/>}/>
           <Route path='update-coverImage' element={<UpdateCoverImage/>}/>
+          <Route path='logout' element={<Logout/>}/>
         </Route>
         <Route path='appearance' element={<Appearance/>}/>
         <Route path='delete-account' element={<DeleteAccount/>}/>

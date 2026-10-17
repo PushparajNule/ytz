@@ -56,7 +56,7 @@ function Channel() {
                     Liked Posts
                     </NavLink>}
 
-                {isOwner && <NavLink>
+                {isOwner && <NavLink to={`/settings/update-account`}>
                     Edit Channel
                     </NavLink>}
             </div>

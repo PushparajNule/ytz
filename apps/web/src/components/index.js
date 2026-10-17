@@ -6,5 +6,6 @@ import Logo from "./Logo.jsx"
 import Button from "./Button.jsx"
 import SearchBar from "./SearchBar.jsx"
 import Input from "./Input.jsx"
+import Popup from "./Popup.jsx"
 
-export {Footer, Header, Sidebar, Logo, Button, SearchBar, Input}
+export {Footer, Header, Sidebar, Logo, Button, SearchBar, Input, Popup}

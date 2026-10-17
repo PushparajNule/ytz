@@ -2,7 +2,9 @@ function Popup(){
 
     return (
         <>
-        
+        <div>
+            popup
+        </div>
         </>
     )
 }

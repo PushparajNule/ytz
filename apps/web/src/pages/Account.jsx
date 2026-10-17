@@ -1,4 +1,3 @@
-import {useQuery} from "@tanstack/react-query"
 import { useAuth } from "../features/AuthContext"
 import Icon from "../components/Icon"
 import { NavLink } from "react-router-dom"

@@ -35,6 +35,12 @@ function UpdateAccount() {
                     Update Cover Image
                 </div>
             </NavLink>
+
+            <NavLink to={`/settings/update-account/logout`}>
+                <div>
+                    Logout
+                </div>
+            </NavLink>
         </div>
 
         <div className="w-full">
