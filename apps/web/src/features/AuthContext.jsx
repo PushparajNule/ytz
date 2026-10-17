@@ -5,7 +5,7 @@ import authApi from "../api/auth.api";
 const AuthContext = createContext()
 
 export function AuthProvider({children}){
-        const {data : user} = useQuery({
+        const {data : user, isError, isLoading} = useQuery({
         queryKey : ["user"],
         queryFn : async () => {
             try {
@@ -23,7 +23,7 @@ export function AuthProvider({children}){
     })
 
     return (
-    <AuthContext.Provider value={{user}}>
+    <AuthContext.Provider value={{user, isLoading, isError}}>
         {children}
     </AuthContext.Provider>)
 }
