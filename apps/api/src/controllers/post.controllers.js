@@ -1,3 +1,4 @@
+import cloudinary from "../db/cloudinary.js";
 import { prisma } from "../db/db.js";
 import {deleteFromCloudinary, uploadToCloudinary, videoUploadToCloudinary} from "../services/uploadToCloud.js";
 import ApiError from "../utils/ApiError.js";
@@ -12,21 +13,38 @@ const createPost = AsyncHandler(async (req, res) => {
     let thumbnailURL;
     let thumbnailPublicURL;
 
+    
+    let videoURL;
+    let videoPublicURL;
+    
+    if(video){
+        const result = await videoUploadToCloudinary(video, "ytz", "video")
+        
+        videoURL = result.secure_url
+        videoPublicURL = result.public_id
+    }
+    
     if(thumbnail){
         const result = await videoUploadToCloudinary(thumbnail, "ytz", "image")
 
         thumbnailURL = result.secure_url
         thumbnailPublicURL = result.public_id
-    }
-
-    let videoURL;
-    let videoPublicURL;
-
-    if(video){
-        const result = await videoUploadToCloudinary(video, "ytz", "video")
-
-        videoURL = result.secure_url
-        videoPublicURL = result.public_id
+    } else {
+        thumbnailURL = cloudinary.url(videoPublicURL + ".jpg", {
+            resource_type: "video",
+            type: "upload",
+            transformation: [
+                { start_offset: "auto" },
+                {
+                    width: 1920,
+                    height: 1080,
+                    crop: "fill",
+                    gravity: "auto"
+                },
+                { quality: "auto:good" },
+                { fetch_format: "jpg" }
+            ]
+        })
     }
 
     const post = await prisma.post.create({
@@ -82,10 +100,74 @@ const getPost = AsyncHandler(async (req, res) => {
     const postId = req.params
 
     const post = await prisma.post.findUnique({
-        where : postId
+        where : postId,
+        include : {
+            user : true
+        }
     })
 
     res.status(200).json(new ApiResponse(200, post))
+})
+
+const getAllPosts = AsyncHandler(async (req, res) => {
+
+    const posts = await prisma.post.findMany({
+        where : { status : "PUBLIC" },
+        include : { user : {
+            select : {
+                avatar : true,
+                username : true
+            }
+        } },
+        orderBy : { createdAt : "desc"}
+    })
+
+    res.status(200).json(new ApiResponse(200, posts))
+})
+
+const getAllPostsByUser = AsyncHandler(async (req, res) => {
+
+    const userId = req.params.id
+
+    const posts = await prisma.post.findMany({
+        where : { owner : userId },
+        include : { user : {
+            select : {
+                avatar : true,
+                username : true
+            }
+        } },
+        orderBy : { createdAt : "desc"}
+    })
+
+    res.status(200).json(new ApiResponse(200, posts))
+})
+
+const getAllPostsBySubs = AsyncHandler(async (req, res) => {
+
+    const userId = req.user.id
+
+    const subsscriptions = await prisma.subscription.findMany({
+        where : {
+            subscriberId : userId
+        }
+    })
+
+    const channelIds = subsscriptions.map((channel) => channel.channelId)
+
+    const posts = await prisma.post.findMany({
+        where : {
+            owner : {
+                in : channelIds
+            }
+        },
+
+        orderBy : {
+            createdAt : "desc"
+        }
+    })
+
+    res.status(200).json(new ApiResponse(200, posts))
 })
 
 const deletePost = AsyncHandler(async (req, res) => {
@@ -103,4 +185,4 @@ const deletePost = AsyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, null, "Post Deleted Successfully"))
 })
 
-export {createPost, updatePost, getPost, deletePost}
+export {createPost, updatePost, getPost, deletePost, getAllPosts, getAllPostsByUser, getAllPostsBySubs}

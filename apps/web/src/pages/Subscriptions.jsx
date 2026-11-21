@@ -6,7 +6,7 @@ function Subscription(){
 
     const {user} = useAuth()
 
-    const subscriptions = user?.data?.data?.subscribedTo
+    const subscriptions = user?.subscribedTo
 
     return (
         <>

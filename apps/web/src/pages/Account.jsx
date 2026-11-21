@@ -10,24 +10,24 @@ function Account(){
         <>
         <div className="p-2 flex">
             <div className="w-1/6 flex items-center justify-center">
-                <Icon src={user?.data?.data?.avatar} className="w-30 h-30"/>
+                <Icon src={user?.avatar} className="w-30 h-30"/>
             </div>
 
             <div className="flex items-center justify-start w-full">
                 <div>
                     <p className="text-2xl">
-                        {user?.data?.data?.username}
+                        {user?.username}
                     </p>
                 
                     <div>
                         <p className="text-sm">
-                            {user?.data?.data?.subscriberCount} Subscribers
+                            {user?.subscriberCount} Subscribers
                         </p>
                     </div>
 
                     <div>
                         <p className="text-sm">
-                            <NavLink to={`/${user?.data?.data?.username}/channel`}>
+                            <NavLink to={`/${user?.username}/channel`}>
                                 view channel
                             </NavLink>
                         </p>

@@ -10,7 +10,7 @@ export function AuthProvider({children}){
         queryFn : async () => {
             try {
                 const user = await authApi.currentUser()
-                return user;
+                return user?.data?.data;
             } catch (error) {
                 if(error.response?.status !== 401){
                     throw error

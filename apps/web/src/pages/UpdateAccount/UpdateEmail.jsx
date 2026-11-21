@@ -47,7 +47,7 @@ function UpdateEmail() {
             <div>
                 <form onSubmit={handleSubmit(submitEmail)}>
                     <div>
-                        <Input {...register("newEmail")} label="Change Email : " placeholder={user?.data?.data?.email} className="border"/>
+                        <Input {...register("newEmail")} label="Change Email : " placeholder={user?.email} className="border"/>
                     </div>
 
                     <div>

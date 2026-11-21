@@ -1,33 +1,42 @@
-import { useEffect, useState } from "react"
-import authApi from "../api/auth.api"
 import { useQuery } from "@tanstack/react-query"
 import { useAuth } from "../features/AuthContext"
+import postApi from "../api/post.api"
+import { PostCard } from "../components"
 
 function Home(){
 
-    const [server, setServer] = useState("Offline")
-    useEffect(() => {
+    const {user} = useAuth()
 
-        const health = async () => {
+    const {data : posts, isLoading} = useQuery({
+        queryKey : ["posts"],
+
+        queryFn : async () => {
             try {
-                const response = await authApi.health()
+                const posts = await postApi.getAllPosts()
 
-                setServer(response?.data)
+                return posts?.data?.data;
             } catch (error) {
-                console.log(error)
+                throw error;
             }
         }
+    })
 
-        health()
-    }, [])
-
-    const {user} = useAuth()
+    if(isLoading){
+        return <div>Loading Posts...</div>
+    }
 
     return (
         <>
             <div className="">
-                {user && <h1>Welcome Back!!! {user.data.data.username}</h1>}
-                <h1>{server.message}</h1>
+                {user && <h1>Welcome Back!!! {user?.data?.data?.username}</h1>}
+            </div>
+
+            <div className="flex">
+                {posts && posts.map((post) => (
+                    <div key={post?.id}>
+                        <PostCard src={post?.thumbnail} alt={post?.title} title={post?.title} owner={post?.user?.username} avatar={post?.user?.avatar} to={`/${post?.id}`}/>
+                    </div>
+                ))}
             </div>
         </>
     )

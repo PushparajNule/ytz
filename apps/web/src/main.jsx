@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import {createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider} from 'react-router-dom'
-import {Account, Appearance, Channel, CreatePost, Home, LikedPosts, Login, Logout, MyPosts, Playlists, PrivacyPolicy, Settings, Signup, Subscriptions, UpdateAccount, UpdateAccountDetails, UpdateAvatar, UpdateCoverImage, UpdateEmail, UpdatePassword} from './pages'
+import {Account, Appearance, Channel, CreatePost, Home, LikedPosts, Login, Logout, MyPosts, Playlists, Post, PrivacyPolicy, Settings, Signup, Subscriptions, UpdateAccount, UpdateAccountDetails, UpdateAvatar, UpdateCoverImage, UpdateEmail, UpdatePassword} from './pages'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from './features/AuthContext.jsx'
 import Protected from './features/Protected.jsx'
@@ -22,6 +22,8 @@ const route = createBrowserRouter(
         <Route path='my-posts' element={<MyPosts/>}/>
         <Route path='liked-posts' element={<LikedPosts/>}/>
       </Route>
+
+      <Route path='/:postId' element={<Post/>} />
 
       <Route element={<Protected/>}>
         <Route path='subscriptions' element={<Subscriptions/>}/>
@@ -44,8 +46,6 @@ const route = createBrowserRouter(
         
         <Route path='createPost' element={<CreatePost/>}/>
       </Route>
-
-
     </Route>
   )
 )

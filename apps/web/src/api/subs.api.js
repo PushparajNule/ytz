@@ -2,12 +2,12 @@ import api from "./client.js";
 
 class SubsApi {
 
-    getChannel(username){
-        return api.get(`/subs/getChannel/${username}`)
+    getChannel(id){
+        return api.get(`/subs/getChannel/${id}`)
     }
 
     subscribe(id){
-        return api.get(`subs/subscribe/${id}`)
+        return api.post(`subs/subscribe/${id}`)
     }
 
     unsubscribe(id){

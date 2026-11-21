@@ -41,7 +41,7 @@ function UpdateAvatar() {
         <>
         <div className="p-2">
             <div className="flex justify-center items-center">
-                <Icon src={user?.data?.data?.avatar} className="w-60 h-60 rounded-xl"/>
+                <Icon src={user?.avatar} className="w-60 h-60 rounded-xl"/>
             </div>
 
             <div className="p-1 m-2">

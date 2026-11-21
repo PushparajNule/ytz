@@ -10,7 +10,7 @@ function Channel() {
 
     const {username} = useParams()
 
-    const isOwner = loggedUser?.data?.data?.username == username
+    const isOwner = loggedUser?.username == username
 
     const {data : user} = useQuery({
         queryKey : ["channel", username],
@@ -19,40 +19,40 @@ function Channel() {
 
     return (
         <div>
-            {user?.data?.data?.coverImage && <div className="w-full h-60">
-                <Icon src={user?.data?.data?.coverImage} alt="CoverImage" className="w-full h-full rounded-xl" />
+            {user?.coverImage && <div className="w-full h-60">
+                <Icon src={user?.coverImage} alt="CoverImage" className="w-full h-full rounded-xl" />
             </div>}
 
             <div className="flex mt-4">
                 <div className="flex w-1/4 justify-center">
-                    <Icon src={user?.data?.data?.avatar} className="w-50 h-50"/>
+                    <Icon src={user?.avatar} className="w-50 h-50"/>
                 </div>
 
                 <div className="w-full">
                     <div className="w-full text-6xl">
-                        {user?.data?.data?.username}
+                        {user?.username}
                     </div>
 
                     <div className="w-full">
-                        {user?.data?.data?.subscriberCount} Subscribers
+                        {user?.subscriberCount} Subscribers
                     </div>
 
                     <div className="w-full">
-                        {user?.data?.data?.description || "No Description"}
+                        {user?.description || "No Description"}
                     </div>
                 </div>
             </div>
 
             <div className="mt-4 pb-4 border-b">
-                <NavLink to={`/${user?.data?.data?.username}/channel/playlists`} className={`pr-4`}>
+                <NavLink to={`/${user?.username}/channel/playlists`} className={`pr-4`}>
                     PlayLists
                 </NavLink>
 
-                <NavLink to={`/${user?.data?.data?.username}/channel/my-posts`} className={`pr-4`}>
+                <NavLink to={`/${user?.username}/channel/my-posts`} className={`pr-4`}>
                     Posts
                 </NavLink>
 
-                {isOwner && <NavLink to={`/${user?.data?.data?.username}/channel/liked-posts`} className={`pr-4`}>
+                {isOwner && <NavLink to={`/${user?.username}/channel/liked-posts`} className={`pr-4`}>
                     Liked Posts
                     </NavLink>}
 

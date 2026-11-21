@@ -8,15 +8,13 @@ function App(){
       <div className="h-screen flex flex-col">
         <Header/>
 
-        <div className="flex flex-1">
+        <div className="flex flex-1 h-full">
           <Sidebar/>
 
-          <main className="flex-1 p-2 h-screen border">
+          <main className="flex-1 p-2 h-full border">
             <Outlet/>
           </main>
         </div>
-
-        <Footer/>
       </div>
     </>
   )

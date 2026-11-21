@@ -48,8 +48,8 @@ function UpdateAccountDetails() {
             <div className="">
                 <form onSubmit={handleSubmit(submitAccountDetails)}>
                     <div>
-                        <Input {...register("username")} label="Change Username : " placeholder={user?.data?.data?.username} className="border" required={false}/>
-                        <Input {...register("description")} label="Change Description : " placeholder={user?.data?.data?.description || "Description"} className="border" required={false}/>
+                        <Input {...register("username")} label="Change Username : " placeholder={user?.username} className="border" required={false}/>
+                        <Input {...register("description")} label="Change Description : " placeholder={user?.description || "Description"} className="border" required={false}/>
                     </div>
 
                     <div>

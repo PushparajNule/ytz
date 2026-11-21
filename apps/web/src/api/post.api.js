@@ -2,12 +2,12 @@ import api from "./client.js";
 
 class PostApi {
 
-    createPost(status, title, description, thumbnail, video){
-        return api.post("/post/createPost", {status, title, description, thumbnail, video})
+    createPost(payload){
+        return api.post("/post/createPost", payload)
     }
 
-    updatePost(status, title, description, id){
-        return api.patch(`/post/updatePost/${id}`, {status, title, description})
+    updatePost(payload){
+        return api.patch(`/post/updatePost/${id}`, payload)
     }
 
     getPost(id){
@@ -16,6 +16,18 @@ class PostApi {
 
     deletePost(id){
         return api.delete(`post/deletePost/${id}`)
+    }
+
+    getAllPosts(){
+        return api.get(`post/getAllPosts`)
+    }
+
+    getAllPostsByUser(id){
+        return api.get(`post/getAllPostsByUser/${id}`)
+    }
+
+    getAllPostsBySubs(){
+        return api.get(`post/getAllPostsBySubs`)
     }
 }
 

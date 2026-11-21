@@ -41,7 +41,7 @@ function UpdateCoverImage() {
         <>
         <div className="p-2">
             <div className="flex justify-center items-center">
-                <Icon src={user?.data?.data?.coverImage} className="w-100 h-60 rounded-xl"/>
+                <Icon src={user?.coverImage} className="w-100 h-60 rounded-xl"/>
             </div>
 
             <div className="p-1 m-2">

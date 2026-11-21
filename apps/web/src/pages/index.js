@@ -13,6 +13,7 @@ import Channel from "./Channel.jsx";
 import MyPosts from "./MyPosts.jsx";
 import LikedPosts from "./LikedPosts.jsx";
 
+import Post from "../components/Post.jsx";
 import CreatePost from "./CreatePost.jsx";
 
 import UpdateAccount from "./UpdateAccount.jsx";
@@ -23,4 +24,4 @@ import UpdateAvatar from "./UpdateAccount/UpdateAvatar.jsx";
 import UpdateCoverImage from "./UpdateAccount/UpdateCoverImage.jsx";
 import Appearance from "./Appearance.jsx";
 
-export {Home, Subscriptions, Playlists, Account, Channel, Settings, PrivacyPolicy, Signup, Login, CreatePost, MyPosts, LikedPosts, UpdateAccount, Appearance, UpdateAccountDetails, UpdateEmail, UpdatePassword, UpdateAvatar, UpdateCoverImage, Logout}
+export {Home, Subscriptions, Playlists, Account, Channel, Settings, PrivacyPolicy, Signup, Login, CreatePost, MyPosts, LikedPosts, UpdateAccount, Appearance, UpdateAccountDetails, UpdateEmail, UpdatePassword, UpdateAvatar, UpdateCoverImage, Logout, Post}

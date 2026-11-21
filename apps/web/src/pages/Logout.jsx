@@ -26,7 +26,7 @@ function Logout(){
         <>
         <div className="border p-2 rounded">
             <div className="m-2">
-                {user?.data?.data?.username}, Are You Sure You Want To Logout???
+                {user?.username}, Are You Sure You Want To Logout???
             </div>
 
             <div className="flex justify-between m-2">
