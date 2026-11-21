@@ -27,6 +27,7 @@ model User {
   subscribedTo Subscription[] @relation("channel")
 
   likedPosts Likes[]
+  dislikedPosts Dislikes[]
 
   refreshToken String?
 
@@ -51,6 +52,7 @@ model Post {
   videoPublicURL String
 
   likes Likes[]
+  dislikes Dislikes[]
 
   user User @relation("owner", fields: [owner], references: [id], onDelete: Cascade)
 
@@ -116,6 +118,20 @@ model Subscription {
 }
 
 model Likes {
+  userId String
+  postId String
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([userId, postId])
+  @@index([userId, createdAt])
+  @@index([postId, createdAt])
+}
+
+model Dislikes {
   userId String
   postId String
 

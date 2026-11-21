@@ -1,5 +1,5 @@
 import express from 'express'
-import { createPost, deletePost, getAllPosts, getAllPostsBySubs, getAllPostsByUser, getPost, updatePost } from '../controllers/post.controllers.js';
+import { createPost, deletePost, dislikePost, getAllPosts, getAllPostsBySubs, getAllPostsByUser, getPost, likePost, updatePost } from '../controllers/post.controllers.js';
 import authMiddleware from '../middlewares/auth.middleware.js';
 import { validateRequest } from '../middlewares/validateRequest.js';
 import { createPostSchema, paramSchema, updatePostSchema } from '../validators/post.schema.js';
@@ -24,5 +24,9 @@ route.get("/getAllPosts", getAllPosts)
 route.get("/getAllPostsByUser/:id", authMiddleware, validateRequest(paramSchema, "params"), getAllPostsByUser)
 
 route.get("/getAllPostsBySubs", authMiddleware, getAllPostsBySubs)
+
+route.post("/likePost/:id", authMiddleware, validateRequest(paramSchema, "params"), likePost)
+
+route.post("/dislikePost/:id", authMiddleware, validateRequest(paramSchema, "params", dislikePost))
 
 export default route;

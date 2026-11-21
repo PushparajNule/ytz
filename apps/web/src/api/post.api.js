@@ -29,6 +29,14 @@ class PostApi {
     getAllPostsBySubs(){
         return api.get(`post/getAllPostsBySubs`)
     }
+
+    likePost(id){
+        return api.post(`post/likePost/${id}`)
+    }
+
+    dislikePost(id){
+        return api.post(`post/dislikePost/${id}`)
+    }
 }
 
 const postApi = new PostApi()

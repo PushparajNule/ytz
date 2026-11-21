@@ -87,9 +87,13 @@ function Post() {
                         </div>
 
                         {user?.id === post?.owner ? "" : post?.isSubscribed ? "Subscribed" : <Button className="h-min" onClick={() => subscribeMutation.mutate(post?.owner)} disabled={subscribeMutation.isPending}>{subscribeMutation.isPending ? "Subscribing" : "Subscribe"}</Button>}
-                        
+
                         <div>
                             like post
+                        </div>
+
+                        <div>
+                            Dislike Post
                         </div>
 
                         <div>

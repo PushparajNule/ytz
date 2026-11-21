@@ -185,4 +185,34 @@ const deletePost = AsyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, null, "Post Deleted Successfully"))
 })
 
-export {createPost, updatePost, getPost, deletePost, getAllPosts, getAllPostsByUser, getAllPostsBySubs}
+const likePost = AsyncHandler(async (req, res) => {
+
+    const postId = req.params.id
+    const userId = req.user.id
+
+    await prisma.likes.create({
+        data : {
+            userId : userId,
+            postId : postId
+        }
+    })
+
+    res.status(201).json(new ApiResponse(201, null, "Post Liked Successfully"))
+})
+
+const dislikePost = AsyncHandler(async (req, res) => {
+
+    const postId = req.params.id
+    const userId = req.user.id
+
+    await prisma.dislikes.create({
+        data : {
+            userId : userId,
+            postId : postId
+        }
+    })
+
+    res.status(201).json(new ApiResponse(201, null, "Post Disliked Successfully"))
+})
+
+export {createPost, updatePost, getPost, deletePost, getAllPosts, getAllPostsByUser, getAllPostsBySubs, likePost, dislikePost}
