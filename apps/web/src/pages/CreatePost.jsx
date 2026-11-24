@@ -3,7 +3,7 @@ import { useAuth } from "../features/AuthContext"
 import postApi from "../api/post.api"
 import { useForm } from "react-hook-form"
 import { Input, Button } from "../components"
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router"
 
 function CreatePost(){
 

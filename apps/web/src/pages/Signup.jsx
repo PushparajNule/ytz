@@ -1,6 +1,6 @@
 import {useForm} from 'react-hook-form'
 import { Button, Input } from '../components'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import authApi from '../api/auth.api'
 

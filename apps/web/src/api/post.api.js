@@ -15,27 +15,35 @@ class PostApi {
     }
 
     deletePost(id){
-        return api.delete(`post/deletePost/${id}`)
+        return api.delete(`/post/deletePost/${id}`)
     }
 
     getAllPosts(){
-        return api.get(`post/getAllPosts`)
+        return api.get(`/post/getAllPosts`)
     }
 
     getAllPostsByUser(id){
-        return api.get(`post/getAllPostsByUser/${id}`)
+        return api.get(`/post/getAllPostsByUser/${id}`)
     }
 
     getAllPostsBySubs(){
-        return api.get(`post/getAllPostsBySubs`)
+        return api.get(`/post/getAllPostsBySubs`)
     }
 
     likePost(id){
-        return api.post(`post/likePost/${id}`)
+        return api.post(`/post/likePost/${id}`)
     }
 
     dislikePost(id){
-        return api.post(`post/dislikePost/${id}`)
+        return api.post(`/post/dislikePost/${id}`)
+    }
+
+    unlikePost(id){
+        return api.post(`/post/unlikePost/${id}`)
+    }
+
+    undislikePost(id){
+        return api.post(`/post/undislikePost/${id}`)
     }
 }
 

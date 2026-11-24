@@ -1,7 +1,8 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import {createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider} from 'react-router-dom'
+import {createBrowserRouter, createRoutesFromElements, Navigate, Route} from 'react-router'
+import { RouterProvider } from 'react-router/dom'
 import {Account, Appearance, Channel, CreatePost, Home, LikedPosts, Login, Logout, MyPosts, Playlists, Post, PrivacyPolicy, Settings, Signup, Subscriptions, UpdateAccount, UpdateAccountDetails, UpdateAvatar, UpdateCoverImage, UpdateEmail, UpdatePassword} from './pages'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from './features/AuthContext.jsx'
@@ -9,7 +10,7 @@ import Protected from './features/Protected.jsx'
 
 const route = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<App/>} replace>
+    <Route path='/' element={<App/>} >
       <Route index element={<Home/>}/>
       <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
 
@@ -17,7 +18,7 @@ const route = createBrowserRouter(
       <Route path='/login' element={<Login/>}/>
 
       <Route path='/:username/channel' element={<Channel/>}>
-        <Route index element={<Navigate to={"playlists"} replace/>}/>
+        <Route index element={<Navigate to={"playlists"} />}/>
         <Route path='playlists' element={<Playlists/>}/>
         <Route path='my-posts' element={<MyPosts/>}/>
         <Route path='liked-posts' element={<LikedPosts/>}/>
@@ -31,7 +32,7 @@ const route = createBrowserRouter(
         <Route path='/playlists' element={<Playlists/>}/>
 
         <Route path='settings' element={<Settings/>}>
-          <Route index element={<Navigate to={"update-account"} replace/>}/>
+          <Route index element={<Navigate to={"update-account"} />}/>
           <Route path='update-account' element={<UpdateAccount/>}>
             <Route index element={<Navigate to={"update-account-details"}/>}/>
             <Route path='update-account-details' element={<UpdateAccountDetails/>}/>

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Button } from "../components"
 import { useAuth } from "../features/AuthContext"
 import authApi from "../api/auth.api"
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router"
 
 function Logout(){
 

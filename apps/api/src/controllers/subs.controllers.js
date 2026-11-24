@@ -12,8 +12,6 @@ const getChannel = AsyncHandler(async (req, res) => {
         where : {username : channelName}
     })
 
-    console.log(safeChannel)
-
     const isSubscribed = !!(await prisma.subscription.findUnique({
         where: {
             subscriberId_channelId: {

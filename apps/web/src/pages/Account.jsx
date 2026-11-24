@@ -1,6 +1,6 @@
 import { useAuth } from "../features/AuthContext"
 import Icon from "../components/Icon"
-import { NavLink } from "react-router-dom"
+import { NavLink } from "react-router"
 
 function Account(){
 

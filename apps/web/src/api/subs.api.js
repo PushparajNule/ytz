@@ -11,7 +11,7 @@ class SubsApi {
     }
 
     unsubscribe(id){
-        return api.get(`subs/unsubscribe/${id}`)
+        return api.delete(`subs/unsubscribe/${id}`)
     }
 
 }

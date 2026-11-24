@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import Icon from './Icon'
 import { useQuery } from '@tanstack/react-query'
 import subsApi from '../api/subs.api'

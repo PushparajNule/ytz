@@ -8,5 +8,7 @@ import SearchBar from "./SearchBar.jsx"
 import Input from "./Input.jsx"
 import Popup from "./Popup.jsx"
 import PostCard from "./PostCard.jsx"
+import ShareBtn from "./ShareBtn.jsx"
+import VideoPlayer from "./VideoPlayer.jsx"
 
-export {Footer, Header, Sidebar, Logo, Button, SearchBar, Input, Popup, PostCard}
+export {Footer, Header, Sidebar, Logo, Button, SearchBar, Input, Popup, PostCard, ShareBtn, VideoPlayer}

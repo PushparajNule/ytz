@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom"
+import { NavLink } from "react-router"
 import Icon from "../components/Icon"
 import { useAuth } from "../features/AuthContext"
 

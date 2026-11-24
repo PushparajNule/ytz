@@ -97,14 +97,55 @@ const updatePost = AsyncHandler(async (req, res) => {
 })
 
 const getPost = AsyncHandler(async (req, res) => {
-    const postId = req.params
+    const postId = req.params.id
 
-    const post = await prisma.post.findUnique({
-        where : postId,
+    const result = await prisma.post.findUnique({
+        where : {id : postId},
         include : {
             user : true
         }
     })
+
+    const isPostLiked = !!(await prisma.likes.findUnique({
+        where : {
+            userId_postId : {
+                userId : req.user.id,
+                postId : postId
+            }
+        }
+    }))
+
+    const isPostDisliked = !!(await prisma.dislikes.findUnique({
+        where : {
+            userId_postId : {
+                userId : req.user.id,
+                postId : postId
+            }
+        }
+    }))
+
+    const isSubscribed = !!(await prisma.subscription.findUnique({
+        where: {
+            subscriberId_channelId: {
+                subscriberId: req.user.id,
+                channelId: result.owner
+            }
+        }
+    }))
+
+    const subscriberCount = await prisma.subscription.count({
+        where : { channelId : result.owner}
+    })
+
+    const likeCount = await prisma.likes.count({
+        where : {postId : postId}
+    })
+
+    const dislikeCount = await prisma.dislikes.count({
+        where : {postId : postId}
+    })
+
+    const post = {...result, isPostLiked, isPostDisliked, isSubscribed, subscriberCount, likeCount, dislikeCount}
 
     res.status(200).json(new ApiResponse(200, post))
 })
@@ -197,6 +238,26 @@ const likePost = AsyncHandler(async (req, res) => {
         }
     })
 
+    const result = await prisma.dislikes.findUnique({
+        where : {
+            userId_postId : {
+                userId : userId,
+                postId : postId
+            }
+        }
+    })
+
+    if(result){
+        await prisma.dislikes.delete({
+        where : {
+            userId_postId : {
+                userId : userId,
+                postId : postId
+            }
+        }
+    })
+    }
+
     res.status(201).json(new ApiResponse(201, null, "Post Liked Successfully"))
 })
 
@@ -212,7 +273,61 @@ const dislikePost = AsyncHandler(async (req, res) => {
         }
     })
 
+    const result = await prisma.likes.findUnique({
+        where : {
+            userId_postId : {
+                userId : userId,
+                postId : postId
+            }
+        }
+    })
+
+    console.log(result)
+
+    if(result){
+        await prisma.likes.delete({
+        where : {
+            userId_postId : {
+                userId : userId,
+                postId : postId
+            }
+        }
+    })
+    }
+
     res.status(201).json(new ApiResponse(201, null, "Post Disliked Successfully"))
 })
 
-export {createPost, updatePost, getPost, deletePost, getAllPosts, getAllPostsByUser, getAllPostsBySubs, likePost, dislikePost}
+const unlikePost = AsyncHandler(async (req, res) => {
+
+    const postId = req.params.id
+
+    await prisma.likes.delete({
+        where : {
+            userId_postId : {
+                userId : req.user.id,
+                postId : postId
+            }
+        }
+    })
+
+    res.status(200).json(new ApiResponse(200, null, "Post Unliked Successfully"))
+})
+
+const undislikePost = AsyncHandler(async (req, res) => {
+
+    const postId = req.params.id
+
+    await prisma.dislikes.delete({
+        where : {
+            userId_postId : {
+                userId : req.user.id,
+                postId : postId
+            }
+        }
+    })
+
+    res.status(200).json(new ApiResponse(200, null, "Post Undisliked Successfully"))
+})
+
+export {createPost, updatePost, getPost, deletePost, getAllPosts, getAllPostsByUser, getAllPostsBySubs, likePost, dislikePost, unlikePost, undislikePost}
