@@ -7,6 +7,7 @@ import subsApi from "../api/subs.api"
 import { useAuth } from "../features/AuthContext"
 import ShareBtn from "./ShareBtn"
 import VideoPlayer from "./VideoPlayer"
+import { useEffect, useRef, useState } from "react"
 
 function Post() {
 
@@ -14,7 +15,7 @@ function Post() {
 
     const {user} = useAuth()
 
-    const {data : post, isLoading} = useQuery({
+    const {data : post, isLoading, isSuccess} = useQuery({
         queryKey : ["post", postId],
 
         queryFn : async () => {
@@ -137,19 +138,125 @@ function Post() {
         }
     })
 
-    if(isLoading){
+    const [video, setVideo] = useState()
+
+    const {data : progress, isFetched : progressFetched, isLoading : progressLoading} = useQuery({
+        queryKey : ["progress", postId],
+
+        queryFn : async () => {
+            try {
+                const res = await postApi.getPostWatchHistory(postId);
+                return res?.data?.data;
+            } catch (error) {
+                throw error;
+            }
+        }
+    })
+
+    const createProgressMutation = useMutation({
+        mutationFn : postApi.createWatchHistory,
+
+        onError : (error) => {
+            error.response.data.errors
+        }
+    })
+
+    const saveProgressMutation = useMutation({
+        mutationFn : postApi.updateWatchHistory,
+
+        onSuccess : () => {
+            queryClient.invalidateQueries({
+                queryKey : ["progress", postId]
+            })
+        },
+
+        onError : (error) => {
+            error.response.data.errors
+        }
+    })
+
+    useEffect(() => {
+        try {
+            if(progressFetched == true && progress == null){
+                createProgressMutation.mutateAsync(postId);
+            } else {
+                return;
+            }
+        } catch (error) {
+            throw error;
+        }
+    }, [isSuccess])
+
+    useEffect(() => {
+        if(!video){
+            console.log('Video Is Loading...')
+            return;
+        }
+
+        if(progress){
+            video.currentTime = progress?.progress;
+            console.log(progress)
+        }
+
+        const saveProgress =  async () => {
+            const data = {
+                postId : postId,
+                progress : video.currentTime,
+                duration : video.duration,
+                completed : video.ended
+            }
+            
+            try {
+                if(progress !== null){
+                    await saveProgressMutation.mutateAsync(data);
+                }
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        const interval = setInterval(() => {
+            if(!video.ended && !video.paused){
+                saveProgress();
+            }
+        }, 5000)
+
+        const handlePause = () => {
+            saveProgress();
+        }
+
+
+        const handleEnded = () => {
+            saveProgress();
+        }
+
+        const handleNavigate = () => {
+            saveProgress();
+        }
+
+        video?.addEventListener("pause", handlePause)
+        video?.addEventListener("ended", handleEnded)
+        video?.addEventListener("navigate", handleNavigate)
+
+        return () => {
+            clearInterval(interval);
+            video?.removeEventListener("pause", handlePause)
+            video?.removeEventListener("ended", handleEnded)
+            video?.removeEventListener("navigate", handleNavigate)
+        }
+    }, [video])
+
+    if(isLoading || progressLoading){
         return <div>Loading Post...</div>
     }
-
-    console.log(post)
 
     return (
         <>
         <div className="flex h-full">
             <div className="w-full border p-2 rounded h-full">
                 <div className="">
-                    <div className="w-full">
-                        <VideoPlayer videoUrl={post?.video} thumbnailUrl={post?.thumbnail}/>
+                    <div className="w-full flex justify-center bg-black rounded-xl">
+                        <VideoPlayer videoUrl={post?.video} thumbnailUrl={post?.thumbnail} videoRef={setVideo}/>
                     </div>
 
                     <div>
@@ -217,7 +324,7 @@ function Post() {
                     </div>
 
                     <div>
-                        {post && post?.user?.description == null ? "No Description" : post?.user?.description}
+                        {post && post?.description == null ? "No Description" : post?.description}
                     </div>
                 </div>
             </div>

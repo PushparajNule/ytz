@@ -9,12 +9,10 @@ function Home(){
 
     const {data : posts, isLoading} = useQuery({
         queryKey : ["posts"],
-
         queryFn : async () => {
             try {
-                const posts = await postApi.getAllPosts()
-
-                return posts?.data?.data;
+                const res = await postApi.getAllPosts()
+                return res?.data?.data;
             } catch (error) {
                 throw error;
             }
@@ -28,10 +26,10 @@ function Home(){
     return (
         <>
             <div className="">
-                {user && <h1>Welcome Back!!! {user?.data?.data?.username}</h1>}
+                {user && <h1>Welcome Back!!! {user?.username}</h1>}
             </div>
 
-            <div className="flex">
+            <div className="flex flex-wrap justify-evenly">
                 {posts && posts.map((post) => (
                     <div key={post?.id}>
                         <PostCard src={post?.thumbnail} alt={post?.title} title={post?.title} owner={post?.user?.username} avatar={post?.user?.avatar} to={`/${post?.id}`}/>

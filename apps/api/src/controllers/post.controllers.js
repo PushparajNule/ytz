@@ -102,7 +102,8 @@ const getPost = AsyncHandler(async (req, res) => {
     const result = await prisma.post.findUnique({
         where : {id : postId},
         include : {
-            user : true
+            user : true,
+            watchhistory : true
         }
     })
 
@@ -200,6 +201,15 @@ const getAllPostsBySubs = AsyncHandler(async (req, res) => {
         where : {
             owner : {
                 in : channelIds
+            }
+        },
+
+        include : {
+            user : {
+                select : {
+                    avatar : true,
+                    username : true
+                }
             }
         },
 
@@ -330,4 +340,127 @@ const undislikePost = AsyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, null, "Post Undisliked Successfully"))
 })
 
-export {createPost, updatePost, getPost, deletePost, getAllPosts, getAllPostsByUser, getAllPostsBySubs, likePost, dislikePost, unlikePost, undislikePost}
+const getAllLikedPostsByUser = AsyncHandler(async (req, res) => {
+    
+    const userId = req.user.id
+
+    const posts = await prisma.likes.findMany({
+        where : { userId : userId },
+
+        include : {
+            post : {
+                include : {
+                    user : {
+                        select : {
+                            avatar : true,
+                            username : true
+                        }
+                    }
+                }
+            }
+        }
+    })
+
+    res.status(200).json(new ApiResponse(200, posts, "All Liked Posts By User"))
+})
+
+const createWatchHistory = AsyncHandler(async (req, res) => {
+
+    const userId = req.user.id
+    const postId = req.params.id
+
+    await prisma.watchHistory.create({
+        data : {
+            userId : userId,
+            postId : postId,
+            progress : 0,
+            duration : 0,
+            completed : false
+        }
+    })
+
+    res.status(201).json(new ApiResponse(201, null, "Added To Watch History"))
+})
+
+const updateWatchHistory = AsyncHandler(async (req, res) => {
+
+    const userId = req.user.id
+
+    const { postId, progress, duration, completed } = req.body
+
+    const history = await prisma.watchHistory.update({
+        where : {
+            userId_postId : {
+                userId : userId,
+                postId : postId
+            }
+        },
+
+        data : {
+            progress : progress,
+            duration : duration,
+            completed : completed
+        }
+    })
+
+    res.status(200).json(new ApiResponse(200, history, "Progress Updated"))
+})
+
+const getWatchHistory = AsyncHandler(async (req, res) => {
+
+    const userId = req.user.id
+
+    const history = await prisma.watchHistory.findMany({
+        where : { userId : userId },
+
+        include : {
+            post : {
+                include : {
+                    user : true
+                }
+            }
+        },
+
+        orderBy : {
+            lastWatched : "desc"
+        }
+    })
+
+    res.status(200).json(new ApiResponse(200, history, "User Watch History Fetched"))
+})
+
+const deleteWatchHistory = AsyncHandler(async (req, res) => {
+    
+    const userId = req.user.id
+    const postId = req.parans.id
+
+    await prisma.watchHistory.delete({
+        where : {
+            userId_postId : {
+                userId : userId,
+                postId : postId
+            }
+        }
+    })
+
+    res.status(200).json(new ApiResponse(200, null, "Removed From Watch History"))
+})
+
+const getPostWatchHistory = AsyncHandler(async (req, res) => {
+
+    const userId = req.user.id
+    const postId = req.params.id
+
+    const history = await prisma.watchHistory.findUnique({
+        where : {
+            userId_postId : {
+                userId : userId,
+                postId : postId
+            }
+        }
+    })
+
+    res.status(200).json(new ApiResponse(200, history, "Post History Fetched"))
+})
+
+export {createPost, updatePost, getPost, deletePost, getAllPosts, getAllPostsByUser, getAllPostsBySubs, likePost, dislikePost, unlikePost, undislikePost, getAllLikedPostsByUser, createWatchHistory, updateWatchHistory, getWatchHistory, deleteWatchHistory, getPostWatchHistory}

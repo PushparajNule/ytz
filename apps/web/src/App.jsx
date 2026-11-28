@@ -15,7 +15,7 @@ function App(){
             <Sidebar/>
           </div>
 
-          <main className="flex-1 p-2 h-max border">
+          <main className="flex-1 p-2 h-full border">
             <Outlet/>
           </main>
         </div>

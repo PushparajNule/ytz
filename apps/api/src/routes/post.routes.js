@@ -1,5 +1,5 @@
 import express from 'express'
-import { createPost, deletePost, dislikePost, getAllPosts, getAllPostsBySubs, getAllPostsByUser, getPost, likePost, undislikePost, unlikePost, updatePost } from '../controllers/post.controllers.js';
+import { createPost, createWatchHistory, deletePost, deleteWatchHistory, dislikePost, getAllLikedPostsByUser, getAllPosts, getAllPostsBySubs, getAllPostsByUser, getPost, getPostWatchHistory, getWatchHistory, likePost, undislikePost, unlikePost, updatePost, updateWatchHistory } from '../controllers/post.controllers.js';
 import authMiddleware from '../middlewares/auth.middleware.js';
 import { validateRequest } from '../middlewares/validateRequest.js';
 import { createPostSchema, paramSchema, updatePostSchema } from '../validators/post.schema.js';
@@ -32,5 +32,17 @@ route.post("/dislikePost/:id", authMiddleware, validateRequest(paramSchema, "par
 route.post("/unlikePost/:id", authMiddleware, validateRequest(paramSchema, "params"), unlikePost)
 
 route.post("/undislikePost/:id", authMiddleware, validateRequest(paramSchema, "params"), undislikePost)
+
+route.get("/getAllLikedPostsByUser", authMiddleware, getAllLikedPostsByUser)
+
+route.post("/createWatchHistory/:id", authMiddleware, validateRequest(paramSchema, "params"), createWatchHistory)
+
+route.patch("/updateWatchHistory", authMiddleware, updateWatchHistory)
+
+route.get("/getWatchHistory", authMiddleware, getWatchHistory)
+
+route.delete("/deleteWatchHistory/:id", authMiddleware, validateRequest(paramSchema, "params"), deleteWatchHistory)
+
+route.get("/getPostWatchHistory/:id", authMiddleware, validateRequest(paramSchema, "params"), getPostWatchHistory)
 
 export default route;

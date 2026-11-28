@@ -9,7 +9,7 @@ function Account(){
     return (
         <>
         <div className="p-2 flex">
-            <div className="w-1/6 flex items-center justify-center">
+            <div className="w-1/12 flex items-center justify-center mr-6">
                 <Icon src={user?.avatar} className="w-30 h-30"/>
             </div>
 
@@ -32,6 +32,48 @@ function Account(){
                             </NavLink>
                         </p>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div className="p-2">
+            <div>
+                <div>
+                    History
+                </div>
+
+                <div>
+                    posts
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    Playlists
+                </div>
+
+                <div>
+                    posts
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    Watch Later
+                </div>
+
+                <div>
+                    posts
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    Liked Posts
+                </div>
+
+                <div>
+                    posts
                 </div>
             </div>
         </div>

@@ -45,6 +45,30 @@ class PostApi {
     undislikePost(id){
         return api.post(`/post/undislikePost/${id}`)
     }
+
+    getAllLikedPostsByUser(){
+        return api.get(`/post/getAllLikedPostsByUser`)
+    }
+
+    createWatchHistory(id){
+        return api.post(`/post/createWatchHistory/${id}`)
+    }
+
+    updateWatchHistory(payload){
+        return api.patch(`/post/updateWatchHistory`, payload)
+    }
+
+    getWatchHistory(){
+        return api.get(`/post/getWatchHistory`)
+    }
+
+    deleteWatchHistory(id){
+        return api.delete(`/post/deleteWatchHistory/${id}`)
+    }
+
+    getPostWatchHistory(id){
+        return api.get(`/post/getPostWatchHistory/${id}`)
+    }
 }
 
 const postApi = new PostApi()
